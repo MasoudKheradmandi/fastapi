@@ -1,5 +1,5 @@
 from fastapi import APIRouter,Depends
-from schemas.product import ShowProduct,CreateProduct
+from schemas.product import ShowProduct,CreateProduct,BaseProduct
 from sqlalchemy.orm import Session
 from models.product import Product
 from database import get_db
@@ -19,4 +19,13 @@ def save_roduct(form:CreateProduct,db: Session = Depends(get_db)):
     db.add(db_product)
     db.commit()
     db.refresh(db_product)
+    return db_product
+
+
+@router.put('/product/{id}',response_model=ShowProduct)
+def update_product(id : int,db:Session=Depends(get_db)):
+    db_product =db.query(Product).filter(Product.id == id).first()
+    if db_product:
+        # db_product.name = 
+        pass
     return db_product
